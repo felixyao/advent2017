@@ -15,15 +15,15 @@ fn read_input() -> Vec<i32> {
 
 
 #[derive(Debug)]
-struct Vistor<'a> {
+struct Cursor<'a> {
     input: &'a mut [i32],
     index: i32,
 }
 
-impl<'a> Vistor<'a> {
+impl<'a> Cursor<'a> {
 
-    fn new(v: &'a mut [i32]) -> Vistor<'a> {
-        Vistor {
+    fn new(v: &'a mut [i32]) -> Cursor<'a> {
+        Cursor {
             input: v,
             index: 0,
         }
@@ -58,17 +58,30 @@ impl<'a> Vistor<'a> {
 
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn run_test() {
+        let mut input = [0,3,0,1,-3];
+        let mut steps:u32 = 1;
+        let mut v = Cursor::new(&mut input);
+        while !v.next() {
+            steps = steps + 1;
+        }
+        assert_eq!(10, steps);
+    }
+}
 
 fn main() {
     let mut input = read_input();
-//    let mut input = [0,3,0,1,-3];
     let mut steps:u32 = 1;
     {
-    let mut v = Vistor::new(&mut input);
+    let mut v = Cursor::new(&mut input);
     while !v.next() {
         steps = steps + 1;
     }
     }
-    println!("{:?}", input);
     println!("{}", steps);
 }
